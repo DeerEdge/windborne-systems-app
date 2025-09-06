@@ -1,0 +1,93 @@
+# Environment variables
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# API Keys and Secrets
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.secret
+*.credentials
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Node modules and build artifacts
+main/node_modules/
+main/dist/
+main/build/
+
+# Cache and temporary files
+backend/cache.db
+backend/*.db
+*.db
+*.db-journal
+cache.db
+
+# Development files
+test_api.py
+start_backend.sh
+
+# Deployment files (keep only Render config)
+railway.json
+nixpacks.toml
+Procfile
+runtime.txt
+
+# Documentation (keep only essential)
+DEPLOYMENT.md
+DEPLOYMENT_GUIDE.md
