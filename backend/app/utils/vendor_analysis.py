@@ -1,4 +1,4 @@
-import pandas as pd
+import csv
 from typing import Dict, List, Any
 from datetime import datetime
 
@@ -179,6 +179,12 @@ class VendorAnalyzer:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"vendor_comparison_{timestamp}.csv"
         
-        df = pd.DataFrame(comparison_table)
-        df.to_csv(filename, index=False)
+        # Write CSV using built-in csv module
+        with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
+            if comparison_table:
+                fieldnames = comparison_table[0].keys()
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(comparison_table)
+        
         return filename
