@@ -9,7 +9,11 @@ const CacheManager = () => {
   const fetchCacheStats = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/keys/status');
+      const apiUrl = process.env.NODE_ENV === 'production' 
+        ? 'https://windborne-systems-app.onrender.com/api/keys/status'
+        : 'http://localhost:5000/api/keys/status';
+      
+      const response = await fetch(apiUrl);
       const data = await response.json();
       if (data.success) {
         setCacheStats(data.data);
@@ -43,7 +47,11 @@ const CacheManager = () => {
   const resetKeyBlacklist = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/keys/reset', {
+      const apiUrl = process.env.NODE_ENV === 'production' 
+        ? 'https://windborne-systems-app.onrender.com/api/keys/reset'
+        : 'http://localhost:5000/api/keys/reset';
+      
+      const response = await fetch(apiUrl, {
         method: 'POST'
       });
       const data = await response.json();

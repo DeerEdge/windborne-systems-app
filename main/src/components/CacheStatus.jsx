@@ -7,7 +7,11 @@ const CacheStatus = () => {
 
   const fetchCacheStats = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/keys/status');
+      const apiUrl = process.env.NODE_ENV === 'production' 
+        ? 'https://windborne-systems-app.onrender.com/api/keys/status'
+        : 'http://localhost:5000/api/keys/status';
+      
+      const response = await fetch(apiUrl);
       const data = await response.json();
       if (data.success) {
         setCacheStats(data.data);

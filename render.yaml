@@ -3,9 +3,8 @@ services:
     name: windborne-vendor-dashboard
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 120 run:app
-    rootDir: backend
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 120 run:app
     envVars:
       - key: ALPHA_VANTAGE_API_KEY
         sync: false

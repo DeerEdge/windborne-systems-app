@@ -10,7 +10,7 @@ import CacheManager from './CacheManager';
 import { AlertTriangle, CheckCircle, RefreshCw, Download } from 'lucide-react';
 
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? '/api' 
+  ? 'https://windborne-systems-app.onrender.com/api' 
   : 'http://localhost:5000/api';
 
 const VendorDashboard = () => {
