@@ -3,10 +3,9 @@ services:
     name: windborne-vendor-dashboard
     env: python
     plan: free
-    buildCommand: |
-      cd backend && pip install -r requirements.txt
-      cd ../main && npm install && npm run build
-    startCommand: cd backend && python3 run.py
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: gunicorn --config backend/gunicorn.conf.py backend.run:app
+    rootDir: .
     envVars:
       - key: ALPHA_VANTAGE_API_KEY
         sync: false
