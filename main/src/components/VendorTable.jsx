@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { AlertTriangle, TrendingUp, TrendingDown, Minus, Download } from 'lucide-react';
 
 const VendorTable = ({ analysis }) => {
   const { comparison_table, flags } = analysis;
@@ -52,9 +52,42 @@ const VendorTable = ({ analysis }) => {
     return Number(value).toFixed(decimals);
   };
 
+  const exportVendorData = (vendor) => {
+    // Create CSV content for individual vendor
+    const csvContent = [
+      ['Metric', 'Value'],
+      ['Company Name', vendor.Name],
+      ['Symbol', vendor.Symbol],
+      ['Category', vendor.Category],
+      ['Market Cap ($B)', formatNumber(vendor['Market Cap ($B)'])],
+      ['Revenue ($B)', formatNumber(vendor['Revenue ($B)'])],
+      ['P/E Ratio', formatNumber(vendor['P/E Ratio'])],
+      ['ROE (%)', formatNumber(vendor['ROE (%)'])],
+      ['Debt/Equity', formatNumber(vendor['Debt/Equity'])],
+      ['Current Ratio', formatNumber(vendor['Current Ratio'])],
+      ['Dividend Yield (%)', formatNumber(vendor['Dividend Yield (%)'])],
+      ['Operating Margin (%)', formatNumber(vendor['Operating Margin (%)'])],
+      ['Profit Margin (%)', formatNumber(vendor['Profit Margin (%)'])],
+      ['Price/Sales', formatNumber(vendor['Price/Sales'])],
+      ['EV/EBITDA', formatNumber(vendor['EV/EBITDA'])],
+      ['Flags', vendor.Flags || 'None']
+    ].map(row => row.join(',')).join('\n');
+
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `${vendor.Symbol}_${vendor.Name.replace(/\s+/g, '_')}_statistics.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="overflow-hidden">
-      <div className="px-8 py-6 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-blue-50/30">
+      <div className="px-8 py-6 border-b border-slate-100 bg-slate-50">
         <h3 className="text-2xl font-light text-slate-800 mb-2">Vendor Comparison</h3>
         <p className="text-slate-500">
           Financial metrics and analysis for potential vendors
@@ -63,8 +96,10 @@ const VendorTable = ({ analysis }) => {
       
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-slate-100">
-          <thead className="bg-slate-50/80">
+          <thead className="bg-slate-50">
             <tr>
+              <th className="px-6 py-4 text-center text-xs font-semibold text-slate-600 uppercase tracking-wider w-16">
+              </th>
               <th className="px-8 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
                 Vendor
               </th>
@@ -109,9 +144,18 @@ const VendorTable = ({ analysis }) => {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white/50 divide-y divide-slate-100">
+          <tbody className="bg-white divide-y divide-slate-100">
             {comparison_table.map((vendor, index) => (
-              <tr key={vendor.Symbol} className={index % 2 === 0 ? 'bg-white/80' : 'bg-slate-50/50 hover:bg-slate-100/50 transition-colors duration-150'}>
+              <tr key={vendor.Symbol} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50 hover:bg-slate-100 transition-colors duration-150'}>
+                <td className="px-6 py-6 whitespace-nowrap text-center">
+                  <button
+                    onClick={() => exportVendorData(vendor)}
+                    className="inline-flex items-center justify-center w-8 h-8 border border-slate-200 rounded-md text-slate-600 bg-white hover:bg-slate-50 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 transition-all duration-200"
+                    title={`Export ${vendor.Name} statistics`}
+                  >
+                    <Download className="w-4 h-4" />
+                  </button>
+                </td>
                 <td className="px-8 py-6 whitespace-nowrap">
                   <div className="flex items-center">
                     <div>
@@ -176,7 +220,7 @@ const VendorTable = ({ analysis }) => {
         </table>
       </div>
       
-      <div className="px-8 py-4 bg-slate-50/80 border-t border-slate-100">
+      <div className="px-8 py-4 bg-slate-50 border-t border-slate-100">
         <div className="flex items-center justify-between text-sm text-slate-500">
           <div className="flex items-center">
             <AlertTriangle className="w-4 h-4 mr-2 text-amber-500" />

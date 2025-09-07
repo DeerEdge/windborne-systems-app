@@ -73,33 +73,17 @@ const VendorDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Navbar */}
       <Navbar 
-        onRefresh={fetchVendorData}
-        onExport={exportToCSV}
-        loading={loading}
+        lastUpdated={lastUpdated}
       />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="mb-12 text-center">
-          <h1 className="text-4xl font-light text-slate-800 mb-3">
-            Vendor Analysis
-          </h1>
-          <p className="text-lg text-slate-500 mb-2">
-            Analyze potential vendors for sensors and materials
-          </p>
-          {lastUpdated && (
-            <p className="text-sm text-slate-400">
-              Last updated: {lastUpdated}
-            </p>
-          )}
-        </div>
 
         {/* Insights */}
         {analysis?.insights && analysis.insights.length > 0 && (
-          <div className="mb-8 bg-white/60 backdrop-blur-sm border border-blue-100 rounded-2xl p-6 shadow-sm">
+          <div className="mb-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
             <h3 className="text-xl font-medium text-slate-700 mb-4">Key Insights</h3>
             <ul className="space-y-3">
               {analysis.insights.map((insight, index) => (
@@ -114,7 +98,7 @@ const VendorDashboard = () => {
 
         {/* Error Message */}
         {error && (
-          <div className="mb-8 bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-2xl p-6 shadow-sm">
+          <div className="mb-8 bg-red-50 border border-red-200 rounded-2xl p-6 shadow-sm">
             <div className="flex">
               <AlertTriangle className="w-6 h-6 text-red-400 mr-3" />
               <div>
@@ -127,8 +111,8 @@ const VendorDashboard = () => {
 
         {/* Loading Overlay */}
         {loading && vendors && (
-          <div className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 flex items-center space-x-4 shadow-xl">
+          <div className="fixed inset-0 bg-slate-900/20 flex items-center justify-center z-50">
+            <div className="bg-white rounded-2xl p-8 flex items-center space-x-4 shadow-xl">
               <RefreshCw className="w-6 h-6 animate-spin text-blue-500" />
               <span className="text-slate-700 font-medium">Updating data...</span>
             </div>
@@ -144,14 +128,14 @@ const VendorDashboard = () => {
                 <button
                   onClick={fetchVendorData}
                   disabled={loading}
-                  className="inline-flex items-center px-4 py-2 border border-slate-200 rounded-lg shadow-sm text-sm font-medium text-slate-600 bg-white/80 hover:bg-white hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 disabled:opacity-50 transition-all duration-200"
+                  className="inline-flex items-center px-4 py-2 border border-slate-200 rounded-lg shadow-sm text-sm font-medium text-slate-600 bg-white hover:bg-slate-50 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 disabled:opacity-50 transition-all duration-200"
                 >
                   <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
                   Refresh Data
                 </button>
                 <button
                   onClick={exportToCSV}
-                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 transition-all duration-200"
+                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 transition-all duration-200"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Export CSV
@@ -169,7 +153,7 @@ const VendorDashboard = () => {
             </div>
 
             {/* Table */}
-            <div className="bg-white/80 backdrop-blur-sm shadow-xl rounded-2xl overflow-hidden border border-slate-100">
+            <div className="bg-white shadow-xl rounded-2xl overflow-hidden border border-slate-200">
               <VendorTable analysis={analysis} />
             </div>
           </>

@@ -78,7 +78,7 @@ const CacheManager = () => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center px-3 py-2 border border-slate-200 rounded-lg shadow-sm text-sm font-medium text-slate-600 bg-white/80 hover:bg-white hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 transition-all duration-200"
+        className="inline-flex items-center px-3 py-2 border border-slate-200 rounded-lg shadow-sm text-sm font-medium text-slate-600 bg-white hover:bg-slate-50 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-300 transition-all duration-200"
       >
         <Database className="w-4 h-4 mr-2" />
         Cache Manager
@@ -86,7 +86,7 @@ const CacheManager = () => {
 
       {/* Modal */}
       {isOpen && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-slate-900/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-medium text-slate-800">Cache Manager</h3>
@@ -100,7 +100,7 @@ const CacheManager = () => {
 
             {loading ? (
               <div className="flex items-center justify-center py-8">
-                <RefreshCw className="w-6 h-6 animate-spin text-blue-500" />
+                <RefreshCw className="w-6 h-6 animate-spin text-slate-500" />
                 <span className="ml-2 text-slate-600">Loading...</span>
               </div>
             ) : (
@@ -135,7 +135,7 @@ const CacheManager = () => {
                   <button
                     onClick={clearCache}
                     disabled={loading}
-                    className="w-full flex items-center justify-center px-4 py-2 border border-red-200 rounded-lg text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-300 disabled:opacity-50"
+                    className="w-full flex items-center justify-center px-4 py-2 border border-red-200 rounded-lg text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-200 disabled:opacity-50"
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
                     Clear All Cache
@@ -144,7 +144,7 @@ const CacheManager = () => {
                   <button
                     onClick={resetKeyBlacklist}
                     disabled={loading}
-                    className="w-full flex items-center justify-center px-4 py-2 border border-blue-200 rounded-lg text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:opacity-50"
+                    className="w-full flex items-center justify-center px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 bg-slate-50 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-200 disabled:opacity-50"
                   >
                     <RefreshCw className="w-4 h-4 mr-2" />
                     Reset Key Blacklist
@@ -152,7 +152,7 @@ const CacheManager = () => {
                 </div>
 
                 {/* Info */}
-                <div className="text-xs text-slate-500 bg-blue-50 rounded-lg p-3">
+                <div className="text-xs text-slate-500 bg-slate-50 rounded-lg p-3">
                   <BarChart3 className="w-4 h-4 inline mr-1" />
                   Cache entries expire after 1 hour. Rate-limited keys are blacklisted for 24 hours.
                 </div>

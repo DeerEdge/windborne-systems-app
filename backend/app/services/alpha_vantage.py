@@ -154,6 +154,13 @@ class AlphaVantageService:
     def get_vendor_data(self, symbol: str) -> Dict:
         """Get comprehensive vendor data using multiple endpoints"""
         try:
+            # Check if we already have cached vendor data
+            vendor_cache_key = f"vendor_{symbol}"
+            cached_vendor_data = self.get_cached_data(vendor_cache_key)
+            if cached_vendor_data:
+                print(f"Using cached data for {symbol}")
+                return cached_vendor_data
+            
             # Get overview data (contains key metrics)
             overview = self.get_company_overview(symbol)
             
@@ -162,13 +169,17 @@ class AlphaVantageService:
                 print(f"Rate limit detected in overview for {symbol}, using sample data...")
                 from app.utils.sample_data import get_sample_vendor_data
                 sample_data = get_sample_vendor_data(symbol)
-                return {
+                sample_vendor_data = {
                     'overview': sample_data['overview'],
                     'income_statement': sample_data['income_statement'],
                     'symbol': symbol,
                     'last_updated': datetime.now().isoformat(),
                     'warning': 'Using sample data due to API rate limit. Upgrade to premium for real-time data.'
                 }
+                
+                # Cache the sample data too
+                self.cache_data(vendor_cache_key, sample_vendor_data)
+                return sample_vendor_data
             
             # Get income statement for additional financial data
             income_statement = self.get_income_statement(symbol)
@@ -178,20 +189,28 @@ class AlphaVantageService:
                 print(f"Rate limit detected in income statement for {symbol}, using sample data...")
                 from app.utils.sample_data import get_sample_vendor_data
                 sample_data = get_sample_vendor_data(symbol)
-                return {
+                sample_vendor_data = {
                     'overview': sample_data['overview'],
                     'income_statement': sample_data['income_statement'],
                     'symbol': symbol,
                     'last_updated': datetime.now().isoformat(),
                     'warning': 'Using sample data due to API rate limit. Upgrade to premium for real-time data.'
                 }
+                
+                # Cache the sample data too
+                self.cache_data(vendor_cache_key, sample_vendor_data)
+                return sample_vendor_data
             
-            return {
+            vendor_data = {
                 'overview': overview,
                 'income_statement': income_statement,
                 'symbol': symbol,
                 'last_updated': datetime.now().isoformat()
             }
+            
+            # Cache the complete vendor data
+            self.cache_data(vendor_cache_key, vendor_data)
+            return vendor_data
             
         except Exception as e:
             print(f"Exception in get_vendor_data for {symbol}: {str(e)}")
@@ -201,13 +220,17 @@ class AlphaVantageService:
                 from app.utils.sample_data import get_sample_vendor_data
                 sample_data = get_sample_vendor_data(symbol)
                 
-                return {
+                sample_vendor_data = {
                     'overview': sample_data['overview'],
                     'income_statement': sample_data['income_statement'],
                     'symbol': symbol,
                     'last_updated': datetime.now().isoformat(),
                     'warning': 'Using sample data due to API rate limit. Upgrade to premium for real-time data.'
                 }
+                
+                # Cache the sample data too
+                self.cache_data(vendor_cache_key, sample_vendor_data)
+                return sample_vendor_data
             
             return {
                 'error': str(e),

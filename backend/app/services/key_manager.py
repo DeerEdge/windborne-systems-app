@@ -90,9 +90,15 @@ class APIKeyManager:
     
     def get_key_stats(self) -> dict:
         """Get usage statistics for all keys"""
+        current_time = datetime.now()
+        available_count = 0
+        for i, key in enumerate(self.keys):
+            if i not in self.key_blacklist or current_time > self.key_blacklist[i]:
+                available_count += 1
+        
         stats = {
             'total_keys': len(self.keys),
-            'available_keys': len([k for k in self.keys if self.keys.index(k) not in self.key_blacklist]),
+            'available_keys': available_count,
             'blacklisted_keys': len(self.key_blacklist),
             'key_usage': self.key_usage.copy(),
             'blacklist_expiry': {str(k): v.isoformat() for k, v in self.key_blacklist.items()}
